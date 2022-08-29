@@ -1,5 +1,23 @@
 # Object Oriented Battle Ship
 
+## Getting started
+
+### Download
+
+```
+git clone git@github.com:wjin17/battleship.git
+```
+
+### Run
+
+From the directory that contains the Battleship folder
+
+```
+python3 Battleship
+```
+
+## Details
+
 ### Description
 
 1. The game starts with 2 players. Each player has 2 boards and a set of pieces {Destroyer:1, Submarine:3, Cruiser:3, Battleship:4, Carrier: 5}. One board stores the location of their pieces and the other board marks areas with hits, misses, and unused spots. The players place the pieces on their respective boards and take turns guessing the location of ships on the opponents board. When the player makes a guess, the opponent will return with the possible outcomes: miss, hit, and sink. The player that sinks all their opponent's ships wins.
