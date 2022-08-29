@@ -1,0 +1,58 @@
+title Battleship
+
+participant Game
+participant Player1
+participant P1Radar
+participant P1Ocean
+participant Player2
+participant P2Radar
+participant P2Ocean
+participant Piece
+
+ref over Game,Piece:Setup Game
+Game->Player1:place_ships()
+Player1->P1Ocean:place_ship(position, ship)
+P1Ocean->P1Ocean:check_valid_position(position): bool
+P1Ocean->P1Ocean:check_valid_orientation(position, size, orientation): bool
+Player1<--P1Ocean:bool
+Game->Player2:place_ships()
+Player2->P2Ocean:place_ship(position, ship)
+P2Ocean->P2Ocean:check_valid_position(position): bool
+P2Ocean->P2Ocean:check_valid_orientation(position, size, orientation): bool
+Player2<--P2Ocean:bool
+
+ref over Player1,P2Ocean:Miss
+Game->Player2:take_hit(position)
+Player2->P2Ocean:mark_hit(position)
+Player2<--P2Ocean:symbol
+Player1<--Player2:(HitStatus.MISS, "Miss")
+Game->Player1:record_guess(position, HitStatus.MISS)
+Player1->P1Radar:mark_hit(position, HitStatus.MISS)
+
+ref over Player1,P2Ocean:Hit
+Game->Player2:take_hit(position)
+Player2->P2Ocean:mark_hit(position)
+Player2<--P2Ocean:symbol
+Player2->Piece:take_hit()
+Player2<--Piece:HitStatus.HIT
+Player1<--Player2:(HitStatus.HIT, "Hit")
+Game->Player1:record_guess(position, HitStatus.HIT)
+Player1->P1Radar:mark_hit(position, HitStatus.Hit)
+
+ref over Player1,P2Ocean:Sink
+Game->Player2:take_hit(position)
+Player2->P2Ocean:mark_hit(position)
+Player2<--P2Ocean:symbol
+Player2->Piece:take_hit()
+Player2<--Piece:HitStatus.SINK
+Player1<--Player2:(HitStatus.SINK, "You just sunk my {Ship.name}")
+Game->Player1:record_guess(position, HitStatus.SINK)
+Player1->P1Radar:mark_hit(position, HitStatus.SINK)
+
+ref over Player1,P2Ocean:Win
+Game->Player2:take_hit(position)
+Player2->P2Ocean:mark_hit(position)
+Player2<--P2Ocean:symbol
+Player2->Piece:take_hit()
+Player2<--Piece:HitStatus.Sink
+Player1<--Player2:(HitStatus.WIN, "You just sunk my last ship")
