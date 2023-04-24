@@ -49,7 +49,7 @@ python3 Battleship
 
 ## Object Model
 
-TODO
+![Battleship Object Model](./assets/object_model.png)
 
 <!-- ![Battleship Object Model](./assets/object_model.png) -->
 
